@@ -1,0 +1,167 @@
+@page "/subscription/edit/{Id:int}"
+
+@using BlazorServerCRUD.Web.Model
+@using BlazorServerCRUD.Web.Data
+@using Microsoft.EntityFrameworkCore
+@inject MarketContext MarketContext
+@inject NavigationManager NavigationManager
+@using System.Linq;
+
+<h3>Create Subscription</h3>
+
+<EditForm Model="subscription" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="CustomerId">Customer Id @subscription.SubscriptionItems.LastOrDefault()</label>
+        <select id="select2" class="form-control" @bind="@subscription.CustomerId">
+            <option value="">Select an item</option>
+            @foreach (var customer in customers)
+            {
+                <option value="@customer.Id">@customer.Nama</option>
+            }
+        </select>
+        <ValidationMessage For="@(() => subscription.CustomerId)" />
+    </div>
+
+    <div class="form-group">
+        <label for="CustomerId">Lokasi Id</label>
+        <select id="select2" class="form-control" @bind="@subscription.LokasiId">
+            <option value="">Select an item</option>
+            @foreach (var lokasi in lokasis)
+            {
+                <option value="@lokasi.Id">@lokasi.Nama</option>
+            }
+        </select>
+        <ValidationMessage For="@(() => subscription.LokasiId)" />
+    </div>
+
+    <div class="form-group">
+        <label for="NoKontak">NoKontak</label>
+        <InputText id="NoKontak" class="form-control" @bind-Value="subscription.NoKontak" />
+        <ValidationMessage For="@(() => subscription.NoKontak)" />
+    </div>
+
+    <div class="form-group">
+        <label for="Status">Status</label>
+        <InputText id="Alaat" class="form-control" @bind-Value="subscription.Status" />
+        <ValidationMessage For="@(() => subscription.Status)" />
+    </div>
+
+    <div class="form-group">
+        <label for="TglAwal">TglAwal:</label>
+        <InputDate id="TglAwal" class="form-control" @bind-Value="subscription.TglAwal" />
+        <ValidationMessage For="@(() => subscription.TglAwal)" />
+    </div>
+
+    <div class="form-group">
+        <label for="TglAkhir">TglAkhir:</label>
+        <InputDate id="TglAkhir" class="form-control" @bind-Value="subscription.TglAkhir" />
+        <ValidationMessage For="@(() => subscription.TglAkhir)" />
+    </div>
+
+    <div class="form-group">
+        <label for="IsPpn">Is PPN</label>
+        <InputSelect id="IsPpn" class="form-control" @bind-Value="subscription.IsPpn">
+            <option value="true">Ya</option>
+            <option value="false">Tidak</option>
+        </InputSelect>
+        <ValidationMessage For="@(() => subscription.IsPpn)" />
+    </div>
+
+    <h3>Add new address</h3>
+    <EditForm Model="@NewSubscriptionItem" OnValidSubmit="@AddSubscriptionItems" Context="ArbitraryConceptualName">
+
+        <div class="form-group">
+            <label for="FirstLine">First Line:</label>
+            <InputNumber id="FirstLine" @bind-Value="NewSubscriptionItem.Harga" class="form-control" />
+            <ValidationMessage For="@(() => NewSubscriptionItem.Harga)" />
+        </div>
+
+        <button type="submit" class="btn btn-outline-primary">Add Subs Item</button>
+    </EditForm>
+
+    @* <div class="form-group">
+        <label for="Harga">Harga</label>
+        <InputNumber id="Harga" class="form-control" @bind-Value="subscriptionItems.Harga" />
+        <ValidationMessage For="@(() => subscriptionItems.Harga)" />
+    </div>
+
+    <div class="form-group">
+        <label for="Sla">SLA</label>
+        <InputText id="Sla" class="form-control" @bind-Value="subscriptionItems.Sla" />
+        <ValidationMessage For="@(() => subscriptionItems.Sla)" />
+    </div>
+
+    <button type="button" class="btn btn-outline-primary" @onclick="AddSubscriptionItems">Add Item</button> *@
+
+    <!-- Display Subscription Items List -->
+    @foreach (var item in subscription.SubscriptionItems)
+    {
+        <div class="form-group">>
+            <label>Price:</label>
+            <InputNumber class="form-control" Value="@item.Harga" Disabled />
+
+            <label>SLA:</label>
+            <InputText class="form-control" Value="@item.Sla" Disabled />
+
+            <button class="btn btn-danger" type="button" @onclick="(() => RemoveItem(item))">Remove</button>
+        </div>
+    }
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="button" class="btn btn-secondary" @onclick="GoBack">Cancel</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+    private Subscription subscription = new Subscription { SubscriptionItems = new List<SubscriptionItem>() };
+
+    private List<Customer> customers;
+
+    private List<Lokasi> lokasis;
+
+    private SubscriptionItem subscriptionItems = new SubscriptionItem();
+
+    private SubscriptionItem NewSubscriptionItem = new();
+    
+    protected override void OnInitialized()
+    { 
+        subscription = MarketContext.Subscriptions.Find(Id);
+        customers = MarketContext.Customers.ToList();
+        lokasis = MarketContext.Lokasi.ToList();
+    }
+    
+    private void HandleValidSubmit()
+    {
+        using var transaction = MarketContext.Database.BeginTransaction();
+        try
+        {
+            MarketContext.Subscriptions.Update(subscription);
+            MarketContext.SaveChanges();
+            transaction.Commit();
+            NavigationManager.NavigateTo($"/subscription/show/{subscription.Id}");
+        }
+        catch (Exception)
+        {
+            transaction.Rollback();
+            // Handle exception (logging, error message, etc.)
+        }  // Redirect to the home page after save
+    }
+
+    private void GoBack()
+    {
+        NavigationManager.NavigateTo("/subscription");  // Navigate back to the home page
+    }
+    private void AddSubscriptionItems()
+    {
+        subscription.SubscriptionItems.Add(NewSubscriptionItem);
+        NewSubscriptionItem = new ();
+    }
+    private void RemoveItem(SubscriptionItem item)
+    {
+        subscription.SubscriptionItems.Remove(item);
+    }
+}

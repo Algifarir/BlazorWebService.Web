@@ -1,0 +1,95 @@
+@page "/customer/edit/{Id:int}"
+
+@using BlazorServerCRUD.Web.Model
+@using BlazorServerCRUD.Web.Data
+@using Microsoft.EntityFrameworkCore
+@inject MarketContext MarketContext
+@inject NavigationManager NavigationManager
+
+<h3>Edit Customer</h3>
+
+@if (customer == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    <EditForm Model="customer" OnValidSubmit="HandleValidSubmit">
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+
+        <div class="form-group">
+            <label for="Nama">Nama:</label>
+            <InputText id="Nama" class="form-control" @bind-Value="customer.Nama" />
+            <ValidationMessage For="@(() => customer.Nama)" />
+        </div>
+
+        <div class="form-group">
+            <label for="Email">Email:</label>
+            <InputText id="Email" class="form-control" @bind-Value="customer.Email" />
+            <ValidationMessage For="@(() => customer.Email)" />
+        </div>
+
+        <div class="form-group">
+            <label for="NoTelp">NoTelp:</label>
+            <InputText id="NoTelp" class="form-control" @bind-Value="customer.NoTelp" />
+            <ValidationMessage For="@(() => customer.NoTelp)" />
+        </div>
+
+        <div class="form-group">
+            <label for="JenisDok">JenisDok:</label>
+            <InputText id="JenisDok" class="form-control" @bind-Value="customer.JenisDok" />
+            <ValidationMessage For="@(() => customer.JenisDok)" />
+        </div>
+
+        <div class="form-group">
+            <label for="NoDok">NoDok:</label>
+            <InputText id="NoDok" class="form-control" @bind-Value="customer.NoDok" />
+            <ValidationMessage For="@(() => customer.NoDok)" />
+        </div>
+
+        <div class="form-group">
+            <label for="ImgDok">ImgDok:</label>
+            <InputText id="ImgDok" class="form-control" @bind-Value="customer.ImgDok" />
+            <ValidationMessage For="@(() => customer.ImgDok)" />
+        </div>
+
+        <div class="form-group">
+            <label for="JenisCustomer">JenisCustomer:</label>
+            <InputText id="JenisCustomer" class="form-control" @bind-Value="customer.JenisCustomer" />
+            <ValidationMessage For="@(() => customer.JenisCustomer)" />
+        </div>
+
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary" @onclick="GoBack">Cancel</button>
+    </EditForm>
+}
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private Customer customer;
+
+    protected override async Task OnInitializedAsync()
+    {
+        customer = await MarketContext.Customers.FindAsync(Id);
+
+        if (customer == null)
+        {
+            NavigationManager.NavigateTo("/");
+        }
+    }
+
+    private async Task HandleValidSubmit()
+    {
+        MarketContext.Update(customer);
+        await MarketContext.SaveChangesAsync();
+        NavigationManager.NavigateTo($"/customer/show/{customer.Id}");
+    }
+
+    private void GoBack()
+    {
+        NavigationManager.NavigateTo("/fetchdata");
+    }
+}

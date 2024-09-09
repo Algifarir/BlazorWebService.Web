@@ -1,0 +1,90 @@
+@page "/cusadasdastomer/create"
+
+@using BlazorServerCRUD.Web.Model
+@using BlazorServerCRUD.Web.Data
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.AspNetCore.Components.Forms
+@inject MarketContext MarketContext
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
+
+<h3>Create Customer</h3>
+
+<EditForm Model="customer" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group mb-1">
+        <label for="Nama">Nama</label>
+        <InputText id="Nama" class="form-control" @bind-Value="customer.Nama" required/>
+        <ValidationMessage For="@(() => customer.Nama)" />
+    </div>
+
+    <div class="form-group mb-1">
+        <label for="Email">Email</label>
+        <InputText id="Email" class="form-control" @bind-Value="customer.Email" required />
+        <ValidationMessage For="@(() => customer.Email)" />
+    </div>
+
+    <div class="form-group mb-1">
+        <label for="NoTelp">Nomor Telepon</label>
+        <InputText id="NoTelp" class="form-control" @bind-Value="customer.NoTelp" required/>
+        <ValidationMessage For="@(() => customer.NoTelp)" />
+    </div>
+
+    <div class="form-group mb-1">
+        <label for="JenisDok">Jenis Dokumen</label>
+        <InputText id="JenisDok" class="form-control" @bind-Value="customer.JenisDok" required/>
+        <ValidationMessage For="@(() => customer.JenisDok)" />
+    </div>
+
+    <div class="form-group mb-1">
+        <label for="NoDok">Nomor Dokumen</label>
+        <InputText id="NoDok" class="form-control" @bind-Value="customer.NoDok" required/>
+        <ValidationMessage For="@(() => customer.NoDok)" />
+    </div>
+
+    <div class="form-group mb-1">
+        <label for="ImgDok">Gambar Dokumen</label>
+        <InputText id="ImgDok" class="form-control" @bind-Value="customer.ImgDok" required/>
+        <ValidationMessage For="@(() => customer.ImgDok)" />
+    </div>
+
+    <div class="form-group mb-1">
+        <label for="JenisCustomer">Jenis Customer</label>
+        <InputText id="JenisCustomer" class="form-control" @bind-Value="customer.JenisCustomer" required />
+        <ValidationMessage For="@(() => customer.JenisCustomer)" />
+    </div>
+
+    <div class="form-group mt-2">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="button" class="btn btn-secondary" @onclick="GoBack">Cancel</button>
+    </div>
+</EditForm>
+
+@code {
+    private Customer customer = new Customer();
+
+    private async Task HandleValidSubmit()
+    {
+         try
+        {
+            MarketContext.Customers.Add(customer);
+            await MarketContext.SaveChangesAsync();
+
+            await JSRuntime.InvokeVoidAsync("alert", "Data has been created successfully!");
+
+            NavigationManager.NavigateTo($"/customer/show/{customer.Id}?created=true");
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $"An error occurred: {ex.Message}");
+        }
+    }
+
+    private void GoBack()
+    {
+        NavigationManager.NavigateTo("/fetchdata");  // Navigate back to the home page
+    }
+}

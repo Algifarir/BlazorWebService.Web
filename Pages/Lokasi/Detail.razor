@@ -1,0 +1,81 @@
+@page "/lokasi/show/{id:int}"
+
+@using BlazorServerCRUD.Web.Model
+@using BlazorServerCRUD.Web.Data
+@using Microsoft.EntityFrameworkCore
+@inject MarketContext MarketContext
+@inject NavigationManager NavigationManager
+
+<h1>Lokasi Detail</h1>
+
+@if (lokasi == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    @if (created)
+    {
+        <div class="alert alert-success" role="alert">
+            Data Berhasil Dibuat
+        </div>
+    }
+    <div>
+        <label>Id:</label>
+        <span>@lokasi.Id</span>
+    </div>
+    <div>
+        <label>Nama:</label>
+        <span>@lokasi.Nama</span>
+    </div>
+    <div>
+        <label>Alamat:</label>
+        <span>@lokasi.Alamat</span>
+    </div>
+    <div>
+        <label>MapsUrl:</label>
+        <span>@lokasi.MapsUrl</span>
+    </div>
+    <div>
+        <label>Deskripsi:</label>
+        <span>@lokasi.Deskripsi</span>
+    </div>
+    <div>
+        <label>IsArea:</label>
+        <span>@lokasi.IsArea</span>
+    </div>
+}
+<button class="btn btn-primary" @onclick="NavigateToHome" >Back to Home</button>
+<button class="btn btn-danger" @onclick="DeleteLokasi">Delete</button>
+
+@code {
+    [Parameter]
+    public int id { get; set; } 
+
+    private Lokasi? lokasi;
+
+    private bool created = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        lokasi = await MarketContext.Lokasi.FindAsync(id);
+
+        var uri = new Uri(NavigationManager.Uri);
+        var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        
+        if (query["created"] == "true")
+        {
+            created = true;
+        }
+    }
+    private void NavigateToHome()
+    {
+        NavigationManager.NavigateTo("/lokasi");
+    }
+    private async Task DeleteLokasi()
+    {
+        MarketContext.Lokasi.Remove(lokasi);
+        await MarketContext.SaveChangesAsync();
+        NavigationManager.NavigateTo("/lokasi?deleted=true");
+    }
+}

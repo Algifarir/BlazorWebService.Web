@@ -1,0 +1,180 @@
+@page "/subscription/create"
+
+@using BlazorServerCRUD.Web.Model
+@using BlazorServerCRUD.Web.Data
+@using Microsoft.EntityFrameworkCore
+@inject MarketContext MarketContext
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JS
+
+<h3>Create Subscription</h3>
+
+<EditForm Model="subscription" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <!-- Customer Selection -->
+    <div class="form-group mb-1">
+        <label for="CustomerId">Customer</label>
+        <select id="CustomerId" class="form-control" @bind="subscription.CustomerId">
+            <option value="">Select a customer</option>
+            @foreach (var customer in customers)
+            {
+                <option value="@customer.Id">@customer.Nama</option>
+            }
+        </select>
+        <ValidationMessage For="@(() => subscription.CustomerId)" />
+    </div>
+
+    <!-- Lokasi Selection -->
+    <div class="form-group mb-1">
+        <label for="LokasiId">Lokasi</label>
+        <select id="LokasiId" class="form-control" @bind="subscription.LokasiId">
+            <option value="">Select a lokasi</option>
+            @foreach (var lokasi in lokasis)
+            {
+                <option value="@lokasi.Id">@lokasi.Nama</option>
+            }
+        </select>
+        <ValidationMessage For="@(() => subscription.LokasiId)" />
+    </div>
+
+    <!-- NoKontak Input -->
+    <div class="form-group mb-1">
+        <label for="NoKontak">Nomor Kontak</label>
+        <InputText id="NoKontak" class="form-control" @bind-Value="subscription.NoKontak" />
+        <ValidationMessage For="@(() => subscription.NoKontak)" />
+    </div>
+
+    <!-- Status Input -->
+    <div class="form-group mb-1">
+        <label for="Status">Status</label>
+        <InputText id="Status" class="form-control" @bind-Value="subscription.Status" />
+        <ValidationMessage For="@(() => subscription.Status)" />
+    </div>
+
+    <!-- TglAwal Input -->
+    <div class="form-group mb-1">
+        <label for="TglAwal">Tanggal Awal</label>
+        <InputDate id="TglAwal" class="form-control" @bind-Value="subscription.TglAwal" />
+        <ValidationMessage For="@(() => subscription.TglAwal)" />
+    </div>
+
+    <!-- TglAkhir Input -->
+    <div class="form-group mb-1">
+        <label for="TglAkhir">Tanggal Akhir</label>
+        <InputDate id="TglAkhir" class="form-control" @bind-Value="subscription.TglAkhir" />
+        <ValidationMessage For="@(() => subscription.TglAkhir)" />
+    </div>
+
+    <!-- IsPpn Input -->
+    <div class="form-group mb-1">
+        <label for="IsPpn">Apakah PPN</label>
+        <InputSelect id="IsPpn" class="form-control" @bind-Value="subscription.IsPpn">
+            <option value="true">Ya</option>
+            <option value="false">Tidak</option>
+        </InputSelect>
+        <ValidationMessage For="@(() => subscription.IsPpn)" />
+    </div>
+
+    <div id="form-wrapper">
+        <div class="form-group" id="form-1">
+            <div class="form-group mb-1">
+                <label for="Harga">Harga</label>
+                <input type="number" id="Harga-1" class="form-control" name="Harga[]"  />
+            </div>
+            <div class="form-group mb-1">
+                <label for="Sla">SLA</label>
+                <input type="text" id="Sla-1" class="form-control" name="Sla[]"  />
+            </div>
+        </div>
+    </div>
+    <div class="form-group">
+        <button type="button" class="btn btn-primary" onclick="addForm()">Add Form</button>
+        <button type="button" class="btn btn-danger" onclick="removeForm()">Remove Form</button>
+    </div>
+
+    @* @foreach (var item in subscription.SubscriptionItems)
+    {
+        <div class="form-group">>
+            <label>Price:</label>
+            <InputNumber class="form-control" Value="@item.Harga" Disabled />
+
+            <label>SLA:</label>
+            <InputText class="form-control" Value="@item.Sla" Disabled />
+
+            <button class="btn btn-danger" type="button" @onclick="(() => RemoveItem(item))">Remove</button>
+        </div>
+    } *@
+
+    <div class="form-group mt-2">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="button" class="btn btn-secondary" @onclick="GoBack">Cancel</button>
+    </div>
+</EditForm>
+
+
+
+@code {
+    private Subscription subscription = new Subscription { SubscriptionItems = new List<SubscriptionItem>() };
+    private List<Customer> customers;
+    private List<Lokasi> lokasis;
+    private SubscriptionItem subscriptionItems = new SubscriptionItem();
+    private SubscriptionItem NewSubscriptionItem = new();
+
+    protected override void OnInitialized()
+    {
+        customers = MarketContext.Customers.ToList();
+        lokasis = MarketContext.Lokasi.ToList();
+        subscription.TglAkhir = DateTime.Now;
+        subscription.TglAwal = DateTime.Now;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await JS.InvokeVoidAsync("initializeSelect2", "#CustomerIdNew");
+        }
+    }
+
+    private void RemoveItem(SubscriptionItem item)
+    {
+        subscription.SubscriptionItems.Remove(item);
+    }
+
+    // Handle form submission
+    private void HandleValidSubmit()
+    {
+        using var transaction = MarketContext.Database.BeginTransaction();
+        try
+        {
+            JS.InvokeVoidAsync("printSubscriptionData", subscription);
+
+            MarketContext.Subscriptions.Add(subscription);
+            MarketContext.SaveChanges();
+            transaction.Commit();
+            NavigationManager.NavigateTo($"/subscription/show/{subscription.Id}?created=true");
+        }
+        catch (Exception)
+        {
+            transaction.Rollback();
+        }
+    }
+
+    private void GoBack()
+    {
+        NavigationManager.NavigateTo("/subscription");
+    }
+
+    private void AddSubscriptionItems()
+    {
+        MarketContext.SubscriptionItems.Add(NewSubscriptionItem);
+        NewSubscriptionItem = new ();
+    }
+
+     private async Task CallJavaScriptFunction()
+    {
+        await JS.InvokeVoidAsync("showAlert", "Hello from Razor!");
+    }
+}

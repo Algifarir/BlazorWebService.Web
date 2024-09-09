@@ -1,0 +1,83 @@
+@page "/customer/show/{id:int}"
+
+@using BlazorServerCRUD.Web.Model
+@using BlazorServerCRUD.Web.Data
+@using Microsoft.EntityFrameworkCore
+@inject MarketContext MarketContext
+@inject NavigationManager NavigationManager
+
+@if (created)
+{
+    <div class="alert alert-success" role="alert">
+        Data Berhasil Dibuat
+    </div>
+}
+
+<h1>Customer Detail</h1>
+
+    <div>
+        <label>Id:</label>
+        <span>@customer.Id</span>
+    </div>
+    <div>
+        <label>Nama:</label>
+        <span>@customer.Nama</span>
+    </div>
+    <div>
+        <label>Email:</label>
+        <span>@customer.Email</span>
+    </div>
+    <div>
+        <label>NoTelp:</label>
+        <span>@customer.NoTelp</span>
+    </div>
+    <div>
+        <label>JenisDok:</label>
+        <span>@customer.JenisDok</span>
+    </div>
+    <div>
+        <label>NoDok:</label>
+        <span>@customer.NoDok</span>
+    </div>
+    <div>
+        <label>ImgDok:</label>
+        <span>@customer.ImgDok</span>
+    </div>
+    <div>
+        <label>JenisCustomer:</label>
+        <span>@customer.JenisCustomer</span>
+    </div>
+
+<button class="btn btn-primary" @onclick="NavigateToHome" >Back to Home</button>
+<button class="btn btn-danger" @onclick="DeleteCustomer">Delete</button>
+
+@code {
+    [Parameter]
+    public int id { get; set; }  // Define the route parameter as an int
+
+    private Customer? customer;  // Nullable to handle null checks
+
+    bool created = false;
+
+    protected override void OnInitialized()
+    {
+        customer =  MarketContext.Customers.Find(id);
+        var uri = new Uri(NavigationManager.Uri);
+        var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        
+        if (query["created"] == "true")
+        {
+            created = true;
+        }
+    }
+    private void NavigateToHome()
+    {
+        NavigationManager.NavigateTo("/fetchdata");  // Navigate to the home page
+    }
+    private async Task DeleteCustomer()
+    {
+        MarketContext.Customers.Remove(customer);
+        await MarketContext.SaveChangesAsync();
+        NavigationManager.NavigateTo("/fetchdata?deleted=true");
+    }
+}

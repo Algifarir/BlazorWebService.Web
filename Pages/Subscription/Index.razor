@@ -1,0 +1,90 @@
+@page "/subscription"
+
+<PageTitle>Customer Subscription</PageTitle>
+
+@using BlazorServerCRUD.Web.Data
+@using BlazorServerCRUD.Web.Model
+@using Microsoft.EntityFrameworkCore
+@using Microsoft.JSInterop 
+@inject MarketContext MarketContext
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JS
+<h1>Subscription</h1>
+
+<p>This Subscription Table</p>
+
+@if (subscriptions == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    @if (deleted)
+    {
+        <div class="alert alert-danger" role="alert">
+            Data Berhasil Dihapus
+        </div>
+    }
+    <table class="table">
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Nomor Kontak</th>
+                <th>Status</th>
+                <th>Tanggal Awal</th>
+                <th>Tanggal Akhir</th>
+                <th>PPN</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var subscription in subscriptions.Select((value, index) => new { value, index }))
+            {
+                <tr>
+                    <td>@(subscription.index + 1)</td> <!-- Display index (starting from 1) -->
+                    <td>@subscription.value.NoKontak</td>
+                    <td>@subscription.value.Status</td>
+                    <td>@subscription.value.TglAwal</td>
+                    <td>@subscription.value.TglAkhir</td>
+                    <td>@subscription.value.IsPpn</td>
+                    <td>
+                        <a class="btn btn-primary" href="@($"/subscription/show/{subscription.value.Id}")"><i class="fas fa-eye"></i></a>
+                        <a class="btn btn-secondary" href="@($"/subscription/edit/{subscription.value.Id}")"><i class="fas fa-pencil-alt"></i></a>
+                        <button class="btn btn-danger" @onclick="() => DeleteSubscription(subscription.value)"><i class="fas fa-trash"></i></button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+    <a class="btn btn-success" href="@($"/subscription/create")">New</a>
+}
+
+@code {
+    private List<Subscription>? subscriptions;
+
+    private bool deleted = false;
+    protected override void OnInitialized()
+    { 
+        subscriptions = MarketContext.Subscriptions.ToList();
+        var uri = new Uri(NavigationManager.Uri);
+        var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        
+        if (query["deleted"] == "true")
+        {
+            deleted = true;
+        }
+
+        JS.InvokeVoidAsync("loadScript", "/js/Subscription/New.js");
+    }
+    private void DeleteSubscription(Subscription subscription)
+    {
+        MarketContext.Subscriptions.Remove(subscription);
+        MarketContext.SaveChangesAsync();
+        NavigationManager.NavigateTo("/subscription?deleted=true", true);
+    }
+
+    private async Task CallJavaScriptFunction()
+    {
+        await JS.InvokeVoidAsync("showAlert", "Hello from Razor!");
+    }
+}

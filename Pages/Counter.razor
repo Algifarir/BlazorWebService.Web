@@ -1,0 +1,48 @@
+﻿@page "/counter"
+@using Microsoft.AspNetCore.Components.Forms
+@using BlazorServerCRUD.Web.Model
+
+<PageTitle>Counter</PageTitle>
+
+<h1>Counter</h1>
+
+<p role="status">Current count: @currentCount</p>
+
+<button class="btn btn-primary" @onclick="IncrementCount">Click me</button>
+
+@if (currentCount > 3)
+{
+    <p>You win!</p>
+}
+
+<br>
+
+<!-- Button to add new buttons -->
+<button class="btn btn-secondary" @onclick="AddButton">Add Button</button>
+
+<!-- Render each button from the list -->
+@foreach (var index in buttonIndices)
+{
+    <button class="btn btn-info" @onclick="() => HandleButtonClick(index)">Button @index</button>
+}
+
+@code {
+    private int currentCount = 0;
+    private List<int> buttonIndices = new List<int>();
+
+    private void IncrementCount()
+    {
+        currentCount++;
+    }
+
+    private void AddButton()
+    {
+        // Add a new button index to the list
+        buttonIndices.Add(buttonIndices.Count + 1);
+    }
+
+    private void HandleButtonClick(int index)
+    {
+        Console.WriteLine($"Button {index} clicked.");
+    }
+}

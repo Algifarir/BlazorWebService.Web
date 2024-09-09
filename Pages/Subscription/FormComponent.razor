@@ -1,0 +1,26 @@
+@using Microsoft.AspNetCore.Components.Forms
+@using BlazorServerCRUD.Web.Model
+
+<EditForm Model="@subscriptionItem" OnValidSubmit="HandleSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div>
+        <label for="name">Name:</label>
+        <InputText id="name" @bind-Value="subscriptionItem.Sla" />
+    </div>
+    <button type="submit">Submit</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public SubscriptionItem subscriptionItem { get; set; }
+
+    [Parameter]
+    public EventCallback<SubscriptionItem> OnSubmit { get; set; }
+
+    private void HandleSubmit()
+    {
+        OnSubmit.InvokeAsync(subscriptionItem);
+    }
+}

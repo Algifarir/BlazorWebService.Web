@@ -1,0 +1,69 @@
+@page "/lokasi/create"
+
+@using BlazorServerCRUD.Web.Model
+@using BlazorServerCRUD.Web.Data
+@using Microsoft.EntityFrameworkCore
+@inject MarketContext MarketContext
+@inject NavigationManager NavigationManager
+
+<h3>Create Lokasi</h3>
+
+<EditForm Model="lokasi" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group mb-1">
+        <label for="Nama">Nama</label>
+        <InputText id="Nama" class="form-control" @bind-Value="lokasi.Nama" />
+        <ValidationMessage For="@(() => lokasi.Nama)" />
+    </div>
+
+    <div class="form-group mb-1">
+        <label for="Alamat">Alamat</label>
+        <InputText id="Alaat" class="form-control" @bind-Value="lokasi.Alamat" />
+        <ValidationMessage For="@(() => lokasi.Alamat)" />
+    </div>
+
+    <div class="form-group mb-1">
+        <label for="MapsUrl">URL Alamat</label>
+        <InputText id="MapsUrl" class="form-control" @bind-Value="lokasi.MapsUrl" />
+        <ValidationMessage For="@(() => lokasi.MapsUrl)" />
+    </div>
+
+    <div class="form-group mb-1">
+        <label for="Deskripsi">Deskripsi</label>
+        <InputText id="Deskripsi" class="form-control" @bind-Value="lokasi.Deskripsi" />
+        <ValidationMessage For="@(() => lokasi.Deskripsi)" />
+    </div>
+
+    <div class="form-group mb-1">
+        <label for="IsArea">Apakah Area</label>
+        <InputSelect id="IsArea" class="form-control" @bind-Value="lokasi.IsArea">
+            <option value="true">Ya</option>
+            <option value="false">Tidak</option>
+        </InputSelect>
+        <ValidationMessage For="@(() => lokasi.IsArea)" />
+    </div>
+
+    <div class="form-group mt-2">
+        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="button" class="btn btn-secondary" @onclick="GoBack">Cancel</button>
+    </div>
+</EditForm>
+
+@code {
+    private Lokasi lokasi = new Lokasi();
+    
+
+    private void HandleValidSubmit()
+    {
+        MarketContext.Lokasi.Add(lokasi);
+        MarketContext.SaveChanges();
+        NavigationManager.NavigateTo($"/lokasi/show/{lokasi.Id}?created=true");  // Redirect to the home page after save
+    }
+
+    private void GoBack()
+    {
+        NavigationManager.NavigateTo("/subscription");  // Navigate back to the home page
+    }
+}

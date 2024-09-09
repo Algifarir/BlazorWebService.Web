@@ -1,0 +1,79 @@
+@page "/lokasi/edit/{Id:int}"
+
+@using BlazorServerCRUD.Web.Model
+@using BlazorServerCRUD.Web.Data
+@using Microsoft.EntityFrameworkCore
+@inject MarketContext MarketContext
+@inject NavigationManager NavigationManager
+
+<h3>Edit Lokasi</h3>
+
+<EditForm Model="lokasi" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <div class="form-group">
+        <label for="Nama">Nama</label>
+        <InputText id="Nama" class="form-control" @bind-Value="lokasi.Nama" />
+        <ValidationMessage For="@(() => lokasi.Nama)" />
+    </div>
+
+    <div class="form-group">
+        <label for="Alamat">Alamat</label>
+        <InputText id="Alaat" class="form-control" @bind-Value="lokasi.Alamat" />
+        <ValidationMessage For="@(() => lokasi.Alamat)" />
+    </div>
+
+    <div class="form-group">
+        <label for="MapsUrl">MapsUrl:</label>
+        <InputText id="MapsUrl" class="form-control" @bind-Value="lokasi.MapsUrl" />
+        <ValidationMessage For="@(() => lokasi.MapsUrl)" />
+    </div>
+
+    <div class="form-group">
+        <label for="Deskripsi">Deskripsi:</label>
+        <InputText id="Deskripsi" class="form-control" @bind-Value="lokasi.Deskripsi" />
+        <ValidationMessage For="@(() => lokasi.Deskripsi)" />
+    </div>
+
+    <div class="form-group">
+        <label for="IsArea">Is Area</label>
+        <InputSelect id="IsArea" class="form-control" @bind-Value="lokasi.IsArea">
+            <option value="true">Ya</option>
+            <option value="false">Tidak</option>
+        </InputSelect>
+        <ValidationMessage For="@(() => lokasi.IsArea)" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="button" class="btn btn-secondary" @onclick="GoBack">Cancel</button>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    private Lokasi? lokasi = new Lokasi();
+
+    protected override void OnInitialized()
+    {
+        lokasi = MarketContext.Lokasi.Find(Id);
+        if (lokasi == null)
+        {
+            NavigationManager.NavigateTo("/lokasi");
+        }
+    }
+    
+
+    private void HandleValidSubmit()
+    {
+        MarketContext.Lokasi.Update(lokasi);
+        MarketContext.SaveChanges();
+        NavigationManager.NavigateTo($"/lokasi/show/{lokasi.Id}");  // Redirect to the home page after save
+    }
+
+    private void GoBack()
+    {
+        NavigationManager.NavigateTo("/lokasi");  // Navigate back to the home page
+    }
+}

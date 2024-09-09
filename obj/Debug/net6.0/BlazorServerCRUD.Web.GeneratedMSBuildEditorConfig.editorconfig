@@ -1,0 +1,136 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = BlazorServerCRUD.Web
+build_property.RootNamespace = BlazorServerCRUD.Web
+build_property.ProjectDir = D:\Algi\Project\BlazorServerCRUD.Web\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = D:\Algi\Project\BlazorServerCRUD.Web
+build_property._RazorSourceGeneratorDebug = 
+
+[D:/Algi/Project/BlazorServerCRUD.Web/App.razor]
+build_metadata.AdditionalFiles.TargetPath = QXBwLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Algi/Project/BlazorServerCRUD.Web/Pages/Algi.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQWxnaS5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Algi/Project/BlazorServerCRUD.Web/Pages/Counter.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ291bnRlci5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Algi/Project/BlazorServerCRUD.Web/Pages/CustomerCreate.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJDcmVhdGUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Algi/Project/BlazorServerCRUD.Web/Pages/CustomerDetail.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJEZXRhaWwucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Algi/Project/BlazorServerCRUD.Web/Pages/CustomerEdit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJFZGl0LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Algi/Project/BlazorServerCRUD.Web/Pages/CustomerIndex.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJJbmRleC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Algi/Project/BlazorServerCRUD.Web/Pages/Customers/Edit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJzXEVkaXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Algi/Project/BlazorServerCRUD.Web/Pages/Customers/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJzXEluZGV4LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Algi/Project/BlazorServerCRUD.Web/Pages/Customers/New.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJzXE5ldy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Algi/Project/BlazorServerCRUD.Web/Pages/Customers/Show.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcQ3VzdG9tZXJzXFNob3cucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Algi/Project/BlazorServerCRUD.Web/Pages/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcSW5kZXgucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Algi/Project/BlazorServerCRUD.Web/Pages/Login.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9naW4ucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Algi/Project/BlazorServerCRUD.Web/Pages/Lokasi/Detail.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9rYXNpXERldGFpbC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Algi/Project/BlazorServerCRUD.Web/Pages/Lokasi/Edit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9rYXNpXEVkaXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Algi/Project/BlazorServerCRUD.Web/Pages/Lokasi/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9rYXNpXEluZGV4LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Algi/Project/BlazorServerCRUD.Web/Pages/Lokasi/New.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcTG9rYXNpXE5ldy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Algi/Project/BlazorServerCRUD.Web/Pages/Register..razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcUmVnaXN0ZXIuLnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Algi/Project/BlazorServerCRUD.Web/Pages/Subscription/Edit.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3Vic2NyaXB0aW9uXEVkaXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Algi/Project/BlazorServerCRUD.Web/Pages/Subscription/FormComponent.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3Vic2NyaXB0aW9uXEZvcm1Db21wb25lbnQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Algi/Project/BlazorServerCRUD.Web/Pages/Subscription/Index.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3Vic2NyaXB0aW9uXEluZGV4LnJhem9y
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Algi/Project/BlazorServerCRUD.Web/Pages/Subscription/New.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3Vic2NyaXB0aW9uXE5ldy5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Algi/Project/BlazorServerCRUD.Web/Pages/Subscription/Show.razor]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcU3Vic2NyaXB0aW9uXFNob3cucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Algi/Project/BlazorServerCRUD.Web/Shared/SurveyPrompt.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXFN1cnZleVByb21wdC5yYXpvcg==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Algi/Project/BlazorServerCRUD.Web/_Imports.razor]
+build_metadata.AdditionalFiles.TargetPath = X0ltcG9ydHMucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Algi/Project/BlazorServerCRUD.Web/Shared/MainLayout.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE1haW5MYXlvdXQucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-83sale5c76
+
+[D:/Algi/Project/BlazorServerCRUD.Web/Shared/NavMenu.razor]
+build_metadata.AdditionalFiles.TargetPath = U2hhcmVkXE5hdk1lbnUucmF6b3I=
+build_metadata.AdditionalFiles.CssScope = b-6y7a872mlo
+
+[D:/Algi/Project/BlazorServerCRUD.Web/Pages/Error.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcRXJyb3IuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Algi/Project/BlazorServerCRUD.Web/Pages/_Host.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0hvc3QuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/Algi/Project/BlazorServerCRUD.Web/Pages/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = UGFnZXNcX0xheW91dC5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 

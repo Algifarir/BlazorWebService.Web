@@ -1,0 +1,95 @@
+@page "/subscription/show/{id:int}"
+
+@using BlazorServerCRUD.Web.Model
+@using BlazorServerCRUD.Web.Data
+@using Microsoft.EntityFrameworkCore
+@inject MarketContext MarketContext
+@inject NavigationManager NavigationManager
+
+<h1>Subscription Detail</h1>
+
+@if (subscription == null)
+{
+    <p><em>Loading...</em></p>
+}
+else
+{
+    @if (created)
+    {
+        <div class="alert alert-success" role="alert">
+            Data Berhasil Dibuat
+        </div>
+    }
+    <div>
+        <label>Customer:</label>
+        <span>@subscription.Customer.Nama</span>
+    </div>
+    <div>
+        <label>Lokasi:</label>
+        <span>@subscription.Lokasi.Nama</span>
+    </div>
+    <div>
+        <label>No Kontak:</label>
+        <span>@subscription.Id</span>
+    </div>
+    <div>
+        <label>No Kontak:</label>
+        <span>@subscription.NoKontak</span>
+    </div>
+    <div>
+        <label>Status:</label>
+        <span>@subscription.Status</span>
+    </div>
+    <div>
+        <label>Tanggal Awal:</label>
+        <span>@subscription.TglAwal</span>
+    </div>
+    <div>
+        <label>Tanggal Akhir:</label>
+        <span>@subscription.TglAkhir</span>
+    </div>
+    <div>
+        <label>PPN:</label>
+        <span>@subscription.IsPpn</span>
+    </div>
+    @foreach (var item in subscription.SubscriptionItems)
+    {
+        <div>
+            <label strong>ITEM</label>
+            <span>@item</span>
+        </div>
+    }
+}
+<button class="btn btn-primary" @onclick="NavigateToHome" >Back to Home</button>
+<button class="btn btn-danger" @onclick="DeleteSubscription">Delete</button>
+
+@code {
+    [Parameter]
+    public int id { get; set; } 
+
+    private Subscription? subscription;
+
+    private bool created = false;
+
+    protected override async Task OnInitializedAsync()
+    {
+        subscription = await MarketContext.Subscriptions.Include(c => c.Customer).Include(c => c.Lokasi).FirstOrDefaultAsync(s => s.Id == id);
+        var uri = new Uri(NavigationManager.Uri);
+        var query = System.Web.HttpUtility.ParseQueryString(uri.Query);
+        
+        if (query["created"] == "true")
+        {
+            created = true;
+        }
+    }
+    private void NavigateToHome()
+    {
+        NavigationManager.NavigateTo("/subscription");
+    }
+    private async Task DeleteSubscription()
+    {
+        MarketContext.Subscriptions.Remove(subscription);
+        await MarketContext.SaveChangesAsync();
+        NavigationManager.NavigateTo("/subscription?deleted=true");
+    }
+}
